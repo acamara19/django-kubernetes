@@ -1,0 +1,13 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: django-kubernetes
+  region: us-east-1
+
+nodeGroups:
+  - name: django-k8s-ng
+    instanceType: m5.large
+    desiredCapacity: 3
+    ssh:
+      enableSsm: true

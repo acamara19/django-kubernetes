@@ -1,0 +1,29 @@
+version: '3.9'
+services:
+    postgres_db:
+        image: postgres
+        restart: always
+        env_file: web/.env
+        command: -p 5434
+        expose:
+          - 5434
+        ports:
+          - "5434:5434"
+        volumes: 
+            - postgres_data:/var/lib/postgresql/data/
+    redis_db:
+        image: redis
+        restart: always
+        expose:
+          - 6380
+        ports:
+          - "6380:6380"
+        volumes:
+            - redis_data:/data
+        entrypoint: redis-server --appendonly yes --port 6380
+
+volumes: 
+    staticfiles:
+        external: true
+    redis_data:
+    postgres_data:
