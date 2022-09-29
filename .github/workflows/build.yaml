@@ -25,17 +25,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: arn:aws:iam::049396975519:role/github-actions-role-oidc
-          aws-region: us-east-1
-
-      - name: Read secrets from AWS Secrets Manager into environment variables
-        uses: abhilash1in/aws-secrets-manager-action@v2.1.0
-        with:
-          secrets: |
-            django/env/prod/*
-          parse-json: true
-
-      - name: Check if env variable is set after fetching secrets
-        run: if [ -z ${POSTGRES_DB+x} ]; then echo "POSTGRES_DB is unset"; else echo "POSTGRES_DB is set to '$POSTGRES_DB'"; fi
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -45,7 +35,7 @@ jobs:
         working-directory: ./web
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: django-k8s-web
+          REPOSITORY: ${{ secrets.AWS_ECR_REPO_NAME }}
           IMAGE_TAG: latest
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
@@ -53,30 +43,30 @@ jobs:
 
       - name: K8s cluster kubeconfig file with/ short-lived creds
         run: |
-          aws eks --region ${AWS_REGION} update-kubeconfig --name ${CLUSTER_NAME}
+          aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ secrets.CLUSTER_NAME }}
 
       - name: Update deployment secrets
         run: |
           cat << EOF >> web/.env.prod
-          AWS_REGION=${AWS_REGION}  
-          ROLE_TO_ASSUME=${ROLE_TO_ASSUME}
-          DJANGO_SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME}
-          DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}
-          DJANGO_SUERPUSER_EMAIL=${DJANGO_SUERPUSER_EMAIL}
-          DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-          ENV_ALLOWED_HOST=${ENV_ALLOWED_HOST}
-          POSTGRES_DB=${POSTGRES_DB}
-          POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-          POSTGRES_USER=${POSTGRES_USER}
-          POSTGRES_HOST=${POSTGRES_HOST}
-          POSTGRES_PORT=${POSTGRES_PORT}
+          AWS_REGION=${{ secrets.AWS_REGION }}  
+          ROLE_TO_ASSUME=${{ secrets.ROLE_TO_ASSUME }}
+          DJANGO_SUPERUSER_USERNAME=${{ secrets.DJANGO_SUPERUSER_USERNAME }}
+          DJANGO_SUPERUSER_PASSWORD=${{ secrets.DJANGO_SUPERUSER_PASSWORD }}
+          DJANGO_SUERPUSER_EMAIL=${{ secrets.DJANGO_SUERPUSER_EMAIL }}
+          DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
+          ENV_ALLOWED_HOST=${{ secrets.ENV_ALLOWED_HOST }}
+          POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+          POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+          POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
           EOF
           kubectl delete secret django-k8s-web-prod-env
           kubectl create secret generic django-k8s-web-prod-env --from-env-file=web/.env.prod
 
       - name: Update Deployment image
         run: |
-          kubectl set image deployment/django-k8s-web-deployment django-k8s-web=049396975519.dkr.ecr.us-east-1.amazonaws.com/django-k8s-web:${GITHUB_SHA::5}
+          kubectl set image deployment/django-k8s-web-deployment django-k8s-web=${{ secrets.AWS_ECR_REPO_URI }}:${GITHUB_SHA::5}
       
       - name: Wait for rollout to finish
         run: |
