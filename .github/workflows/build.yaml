@@ -35,7 +35,7 @@ jobs:
           parse-json: true
 
       - name: Check if env variable is set after fetching secrets
-        run: if [ -z ${POSTGRES_DB + x} ]; then echo "POSTGRES_DB is unset"; else echo "POSTGRES_DB is set to '$POSTGRES_DB'"; fi
+        run: if [ -z ${POSTGRES_DB+x} ]; then echo "POSTGRES_DB is unset"; else echo "POSTGRES_DB is set to '$POSTGRES_DB'"; fi
 
       - name: Login to Amazon ECR
         id: login-ecr
