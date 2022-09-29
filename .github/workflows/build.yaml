@@ -76,7 +76,7 @@ jobs:
 
       - name: Update Deployment image
         run: |
-          kubectl set image deployment/django-k8s-web-deployment django-k8s-web=049396975519.dkr.ecr.us-east-1.amazonaws.com/django-k8s-web:latest:${GITHUB_SHA::7}-${GITHUB_RUN_ID::5}
+          kubectl set image deployment/django-k8s-web-deployment django-k8s-web=049396975519.dkr.ecr.us-east-1.amazonaws.com/django-k8s-web:${GITHUB_SHA::5}
       
       - name: Wait for rollout to finish
         run: |
