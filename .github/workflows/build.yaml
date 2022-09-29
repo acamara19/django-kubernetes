@@ -43,7 +43,7 @@ jobs:
 
       - name: K8s cluster kubeconfig file with/ short-lived creds
         run: |
-          aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ secrets.CLUSTER_NAME }} --role-arn arn:aws:iam::049396975519:role/eksctl-django-kubernetes-cluster-ServiceRole-1KGVHH4VB77BL
+          aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ secrets.CLUSTER_NAME }} --role-arn ${{ secrets.ROLE_TO_ASSUME }}
 
       - name: Update deployment secrets
         run: |
