@@ -36,7 +36,7 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: ${{ secrets.AWS_ECR_REPO_NAME }}
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: ${{ secrets.IMAGE_TAG }}
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
@@ -67,7 +67,7 @@ jobs:
 
       - name: Update Deployment image
         run: |
-          kubectl set image deployment/django-k8s-web-deployment django-k8s-web=${{ secrets.AWS_ECR_REPO_URI }}:${{ github.sha }}
+          kubectl set image deployment/django-k8s-web-deployment django-k8s-web=${{ secrets.AWS_ECR_REPO_URI }}:${{ secrets.IMAGE_TAG }}-${{ github.sha }}
       
       - name: Wait for rollout to finish
         run: |
