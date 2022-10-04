@@ -38,10 +38,11 @@ jobs:
           REPOSITORY: ${{ secrets.AWS_ECR_REPO_NAME }}
           IMAGE_TAG: ${{ secrets.IMAGE_TAG }}
         run: |
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker build -t django-k8s-web .
+          docker tag django-k8s-web:latest 049396975519.dkr.ecr.us-east-1.amazonaws.com/django-k8s-web:latest
+          docker push 049396975519.dkr.ecr.us-east-1.amazonaws.com/django-k8s-web:latest
 
-      - name: K8s cluster kubeconfig file with/ short-lived creds
+      - name: K8s cluster kubeconfig file
         run: |
           aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ secrets.CLUSTER_NAME }}
 
