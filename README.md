@@ -5,7 +5,7 @@ Deploy a production-ready Django application into a Kubernetes cluster. Kubernet
  
 This project is a practical kubernetes implementation using a Docker-based Django application.
 
-There are many ways to get Django into production. But in this project, we are going to use K8s. And here's some the reason for using K8s
+There are many ways to get Django into production. But in this project, we are going to use K8s. And here are some the reason for using K8s:
 
 - Gracefully deploy Docker-based Django projects
 - Scale up (or scale down) your web apps with ease
