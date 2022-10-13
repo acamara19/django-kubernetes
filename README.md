@@ -1,4 +1,4 @@
-![](images/django-k8s-logo.jpeg)
+![](images/kube-django.png)
 
 # django-kubernetes
 Deploy a production-ready Django application into a Kubernetes cluster.
