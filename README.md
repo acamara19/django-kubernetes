@@ -1,13 +1,11 @@
 ![](images/kube-django.png)
 
 # django-kubernetes
-Deploy a production-ready Django application into a Kubernetes cluster.
+Deploy a production-ready Django application into a Kubernetes cluster. Kubernetes, also known as K8s, is an open-source system for automating deployment, scaling, and management of containerized applications. Django on the other hand, is a Python web framework that encourages rapid development and clean, pragmatic design.
+ 
+This project is a practical kubernetes implementation using a Docker-based Django application.
 
-Kubernetes is a tool to manage containers. This type of management is called orchestration because it does more than just manage the containers such as it will scale up and scale down resources as needed (among many other things). 
-
-This is a practical kubernetes implementation using a Docker-based Django application.
-
-Django is a way to build web applications rapidly using Python. There are many ways to get Django into production so the question is why use K8S at all? There's many reasons we'll cover throughout this series but here are a few:
+There are many ways to get Django into production. But in this project, we are going to use K8s. And here's some the reason for using K8s
 
 - Gracefully deploy Docker-based Django projects
 - Scale up (or scale down) your web apps with ease
@@ -29,11 +27,10 @@ To make this project more approachable here's what we'll be doing:
 
 
 ### References Codingforentrepreneurs Django-Kubernetes Course
-- https://github.com/codingforentrepreneurs/Django-Kubernetes
+- https://www.codingforentrepreneurs.com/courses/django-kubernetes/
 - [Django on Docker](https://www.codingforentrepreneurs.com/blog/django-on-docker) guide
 - [Docker & Docker Compose](https://www.codingforentrepreneurs.com/projects/docker-and-docker-compose) tutorial series
 - [Github Actions](https://www.codingforentrepreneurs.com/blog/django-github-actions) guide
-- [DigitalOcean $100 credit](https://do.co/cfe-sh) for new accounts
 - [Code](https://github.com/codingforentrepreneurs/Django-Kubernetes)
 
 
